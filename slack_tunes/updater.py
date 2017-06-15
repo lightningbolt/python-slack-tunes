@@ -112,7 +112,7 @@ def soundcloud_song():
                 repeat with t in tabs of windows
                     tell t
                         if URL starts with "https://soundcloud.com" then
-                            set track to execute javascript "playing = document.getElementsByClassName('playbackSoundBadge__titleLink')[0]; if (playing) { playing.title } else { '' }"
+                            set track to execute javascript "play_state = document.getElementsByClassName('playControl')[0]; playing = document.getElementsByClassName('playbackSoundBadge__titleLink')[0]; if (play_state && play_state.title == 'Pause current' && playing) { playing.title } else { '' }"
                             return track
                         end if
                     end tell
