@@ -81,9 +81,10 @@ def update_status(is_playing, text=None, tokens=None):
         if status:
             print('error: {0}'.format(url.getcode()))
         else:
-            body = json.loads(url.read())
-            if not body.get('ok'):
-                print('error: {0}'.format(url.read()))
+            body = url.read()
+            body_json = json.loads(body)
+            if not body_json.get('ok'):
+                print('error: {0}'.format(body))
         responses.append(status)
 
     return responses
@@ -112,8 +113,9 @@ def soundcloud_song():
                 repeat with t in tabs of windows
                     tell t
                         if URL starts with "https://soundcloud.com" then
-                            set track to execute javascript "play_state = document.getElementsByClassName('playControl')[0]; playing = document.getElementsByClassName('playbackSoundBadge__titleLink')[0]; if (play_state && play_state.title == 'Pause current' && playing) { playing.title } else { '' }"
-                            return track
+                            set play_control to execute javascript "play_control = document.getElementsByClassName('playControl')[0]; if (play_control) { play_control.title } else { '' }"
+                            set track to execute javascript "playing = document.getElementsByClassName('playbackSoundBadge__titleLink')[0]; if (playing) { playing.title } else { '' }"
+                            if play_control = "Pause current" then return track
                         end if
                     end tell
                 end repeat
